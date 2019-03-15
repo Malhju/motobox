@@ -1,0 +1,9 @@
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+}
+.welcome-container > h1 {
+    text-align: center;
+    margin-top: 40vh;
+    font-size: 40px;
+}
