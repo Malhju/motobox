@@ -4,6 +4,9 @@
 }
 .welcome-container > h1 {
     text-align: center;
-    margin-top: 40vh;
     font-size: 40px;
+}
+
+li {
+    list-style-type: none;
 }

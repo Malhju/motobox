@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpHeaderResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+const url = 'http://localhost:8080';
 
 const mockUser = {
 	"email": "julien@mocktest.fr",
@@ -14,29 +17,31 @@ const mockUser = {
 		"postalcode": "01000",
 		"city": "LYON"
 	}
-}
+};
 
-const mockLogin = {
-    "email": "julien@mocktest.fr",
-    "password": "abc"
-}
-
-const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': 'my-auth-token'
-    })
-  };
+// const httpOptions = {
+//     headers: new HttpHeaders({
+//       'Content-Type':  'application/json',
+//       'Authorization': 'my-auth-token'
+//     })
+//   };
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
+
+  isLogged() {
+    if (localStorage.getItem('motoboxToken')) {
+        return true;
+    }
+    return false;
+  }
 
   createUser() {
-    this.http.post('http://localhost:8080/user', mockUser).subscribe(
+    this.http.post( url + '/user', mockUser).subscribe(
         data => {
             console.log('POST Request is successful ', data);
         },
@@ -46,24 +51,20 @@ export class UserService {
     );
   }
 
-  login() {
-    this.http.post('http://localhost:8080/login', mockLogin, {observe: 'response'})
-        .subscribe( (res => {
-            console.log(res);
-            console.log(res.headers.get('Authorization'));
-            // console.log(res.headers.get('Authorization', {}));
-        }));
+  login(loginDatas) {
+    this.http.post( url + '/login', loginDatas, {observe: 'response'})
+        .subscribe( res => {
+            localStorage.setItem('motoboxToken', res.headers.get('Authorization'));
+            this.router.navigate(['/']);
+        },
+        err => {
+            if (err.status === 403) {
+                console.log('Erreur de connection');
+            }
+        });
+  }
 
-    // this.httpClient.post(url, data, {observe: 'response'})
-    // .map((res: HttpResponse<any>) => {
-    //     let myHeader = res.headers.get('my-header');
-    //     return res;
-    // });
-
-//     http
-//   .get<any>('url', {observe: 'response'})
-//   .subscribe(resp => {
-//     console.log(resp.headers.get('X-Token'));
-//   });
+  logout() {
+    return true;
   }
 }

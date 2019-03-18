@@ -1,3 +1,9 @@
 <div class="welcome-container">
     <h1>We are MotoBox</h1>
 </div>
+
+<ul *ngFor="let ad of ads">
+    <li>
+        <app-ad-card [ad]=ad></app-ad-card>
+    </li>
+</ul>

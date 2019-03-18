@@ -5,5 +5,5 @@
     <span class="spacer"></span>
     <button mat-button *ngIf="!isLoggedIn" (click)="navigateTo('signin')">Sign in</button>
     <button mat-button *ngIf="!isLoggedIn" (click)="navigateTo('login')">Login</button>
-    <button mat-button *ngIf="isLoggedIn" (click)="navigateTo('logout')">Logout</button>
+    <button mat-button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
 </mat-toolbar>
